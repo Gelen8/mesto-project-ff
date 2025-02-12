@@ -13,6 +13,7 @@ function createCard (initialCards, deleteCard) {
     const cardTitle = cardElement.querySelector('.card__title');
 
     cardImage.src = initialCards.link;
+    cardImage.alt = initialCards.name;
     cardTitle.textContent = initialCards.name;
 
     const deleteButton = cardElement.querySelector('.card__delete-button');
