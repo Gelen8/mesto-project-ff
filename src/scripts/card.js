@@ -1,5 +1,5 @@
 // Функция создания карточки
-export function createCard (initialCard, deleteCard, likeCard, showImageModal) {
+export function createCard (cardData, deleteCard, likeCard, showImageModal) {
 
     const cardTemplate = document.querySelector('#card-template').content;
     const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
@@ -7,9 +7,9 @@ export function createCard (initialCard, deleteCard, likeCard, showImageModal) {
     const cardImage = cardElement.querySelector('.card__image');
     const cardTitle = cardElement.querySelector('.card__title');
 
-    cardImage.src = initialCard.link;
-    cardImage.alt = initialCard.name;
-    cardTitle.textContent = initialCard.name;
+    cardImage.src = cardData.link;
+    cardImage.alt = cardData.name;
+    cardTitle.textContent = cardData.name;
 
     const deleteButton = cardElement.querySelector('.card__delete-button');
     deleteButton.addEventListener('click', () => deleteCard(cardElement));
@@ -17,7 +17,7 @@ export function createCard (initialCard, deleteCard, likeCard, showImageModal) {
     const likeButton = cardElement.querySelector('.card__like-button');
     likeButton.addEventListener('click', () => likeCard(likeButton));
 
-    cardImage.addEventListener('click', (evt) => showImageModal(evt, cardImage, cardTitle));
+    cardImage.addEventListener('click', () => showImageModal(cardData.link, cardData.name));
 
     return cardElement;
 

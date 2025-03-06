@@ -3,8 +3,6 @@ export function openModal(popup) {
 
     popup.classList.add('popup_is-opened', 'popup_is-animated');
 
-    setValuetoForm(popup);
-    setCloseModalByButton(popup);
     document.addEventListener('keydown', handleKeydown);
 };
 
@@ -17,20 +15,18 @@ export function closeModal(popup) {
 };
 
 // Обработчик клика по оверлею
-export function handleClickOnOverlay(element, popup) { 
+export function handleClickOnOverlay(evt) { 
 
-    if (element.target.classList.contains('popup')) {
-        closeModal(popup);
+    if (evt.target.classList.contains('popup')) {
+        closeModal(evt.target);
     };
 };
 
 // Функция добавляющая на кнопку Крестик функцию закрытия 
-function setCloseModalByButton(popup) {
+export function setCloseModalByButton(popup) {
 
-    if (popup.classList.contains('popup_is-opened')) {
-        const buttonPopupClose = popup.querySelector('.popup__close');
-        buttonPopupClose.addEventListener('click', () => closeModal(popup));
-    }
+    const buttonPopupClose = popup.querySelector('.popup__close');
+    buttonPopupClose.addEventListener('click', () => closeModal(popup));
 };
 
 // Функция возвращающая открытое модальное окно
@@ -45,18 +41,5 @@ function handleKeydown(evt) {
 
     if (evt.key === 'Escape') {
         closeModal(getOpenedPopup());
-    }
-};
-
-// функция запоняющая поля формы
-function setValuetoForm(popup) {
-
-    if (popup.classList.contains('popup_type_edit')) {
-        
-        const nameInput = popup.querySelector('.popup__input_type_name');
-        const jobInput = popup.querySelector('.popup__input_type_description');
-
-        nameInput.value = document.querySelector('.profile__title').textContent;
-        jobInput.value = document.querySelector('.profile__description').textContent;
     }
 };

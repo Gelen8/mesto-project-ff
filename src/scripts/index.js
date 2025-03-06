@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import initialCards from './cards.js';
 import {createCard, deleteCard, likeCard} from './card.js';
-import {openModal, closeModal, handleClickOnOverlay, getOpenedPopup} from './modal.js';
+import {openModal, closeModal, handleClickOnOverlay, setCloseModalByButton} from './modal.js';
 
 const placesList = document.querySelector('.places__list');
 
@@ -15,8 +15,25 @@ initialCards.forEach(function(card) {
 const popupProfile = document.querySelector('.popup_type_edit');
 const buttonEditProfile = document.querySelector('.profile__edit-button'); 
 
-buttonEditProfile.addEventListener('click', () => openModal(popupProfile)); 
+buttonEditProfile.addEventListener('click', () => {
+    openModal(popupProfile);
+    setValueToForm(popupProfile);
+}); 
+
+setCloseModalByButton(popupProfile);
 popupProfile.addEventListener('click', (evt) => handleClickOnOverlay(evt, popupProfile));
+
+function setValueToForm(popup) {
+
+    if (popup.classList.contains('popup_type_edit')) {
+        
+        const nameInput = popup.querySelector('.popup__input_type_name');
+        const jobInput = popup.querySelector('.popup__input_type_description');
+
+        nameInput.value = document.querySelector('.profile__title').textContent;
+        jobInput.value = document.querySelector('.profile__description').textContent;
+    }
+};
 
 // Форма редактирование профиля
 const formElementEditProfile = document.querySelector('.popup_type_edit .popup__form'); // получаем форму редактирования профиля
@@ -33,20 +50,19 @@ function handleFormEditProfileSubmit(evt) {
     nameProfile.textContent = nameInput.value;
     jobProfile.textContent = jobInput.value;
 
-    formElementEditProfile.reset();
-
-    closeModal(getOpenedPopup());
+    closeModal(popupProfile);
 }
 
 // Прикрепляем обработчик к форме:
 formElementEditProfile.addEventListener('submit', handleFormEditProfileSubmit);
 
 // 2) Модальное окно добавления карточки
-const popupNewCard = document.querySelector('.popup_type_new-card'); // модальное окно добавления карточки
-const buttonAddCard = document.querySelector('.profile__add-button'); // кнопка открытия модалки добавления карточки
+const popupNewCard = document.querySelector('.popup_type_new-card'); 
+const buttonAddCard = document.querySelector('.profile__add-button'); 
 
-buttonAddCard.addEventListener('click', () => openModal(popupNewCard)); // вешаем слушатель на кнопку открытия модалки
-popupNewCard.addEventListener('click', (evt) => handleClickOnOverlay(evt, popupNewCard)); //на всю модалку вешаем слушатель клика по оверлею
+buttonAddCard.addEventListener('click', () => openModal(popupNewCard));
+setCloseModalByButton(popupNewCard);
+popupNewCard.addEventListener('click', (evt) => handleClickOnOverlay(evt, popupNewCard));
 
 // Форма добавления карточки
 const formElementNewCard =document.querySelector('.popup_type_new-card .popup__form'); // получаем форму создания карточки
@@ -63,26 +79,25 @@ function handleFormNewCardSubmit(evt) {
 
     placesList.prepend(createCard(cardData, deleteCard, likeCard, showImageModal));
     formElementNewCard.reset();
-    closeModal(getOpenedPopup());
+    closeModal(popupNewCard);
 }
 
 formElementNewCard.addEventListener('submit', handleFormNewCardSubmit);
 
 // 3) Модальное окно просмотра фотографии
 const popupImage = document.querySelector('.popup_type_image');
+setCloseModalByButton(popupImage);
 popupImage.addEventListener('click', (evt) => handleClickOnOverlay(evt, popupImage));
 
 // Функция показывающая картинку в модальном окне
-function showImageModal(evt, image, title) {
+function showImageModal(link, name) {
     
-    if (evt.target.classList.contains('card__image')) {
         openModal(popupImage);
 
         const imagePopup = popupImage.querySelector('.popup__image');
         const imagePopupCaption = popupImage.querySelector('.popup__caption');
 
-        imagePopup.src = image.src;
-        imagePopup.alt = image.alt;
-        imagePopupCaption.textContent = title.textContent;
-    }
+        imagePopup.src = link;
+        imagePopup.alt = name;
+        imagePopupCaption.textContent = name;
 };
