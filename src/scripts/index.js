@@ -21,18 +21,16 @@ buttonEditProfile.addEventListener('click', () => {
 }); 
 
 setCloseModalByButton(popupProfile);
-popupProfile.addEventListener('click', (evt) => handleClickOnOverlay(evt, popupProfile));
+popupProfile.addEventListener('click', handleClickOnOverlay);
 
 function setValueToForm(popup) {
 
-    if (popup.classList.contains('popup_type_edit')) {
-        
         const nameInput = popup.querySelector('.popup__input_type_name');
         const jobInput = popup.querySelector('.popup__input_type_description');
 
         nameInput.value = document.querySelector('.profile__title').textContent;
         jobInput.value = document.querySelector('.profile__description').textContent;
-    }
+
 };
 
 // Форма редактирование профиля
@@ -62,7 +60,7 @@ const buttonAddCard = document.querySelector('.profile__add-button');
 
 buttonAddCard.addEventListener('click', () => openModal(popupNewCard));
 setCloseModalByButton(popupNewCard);
-popupNewCard.addEventListener('click', (evt) => handleClickOnOverlay(evt, popupNewCard));
+popupNewCard.addEventListener('click', handleClickOnOverlay);
 
 // Форма добавления карточки
 const formElementNewCard =document.querySelector('.popup_type_new-card .popup__form'); // получаем форму создания карточки
@@ -87,7 +85,7 @@ formElementNewCard.addEventListener('submit', handleFormNewCardSubmit);
 // 3) Модальное окно просмотра фотографии
 const popupImage = document.querySelector('.popup_type_image');
 setCloseModalByButton(popupImage);
-popupImage.addEventListener('click', (evt) => handleClickOnOverlay(evt, popupImage));
+popupImage.addEventListener('click', handleClickOnOverlay);
 
 // Функция показывающая картинку в модальном окне
 function showImageModal(link, name) {
