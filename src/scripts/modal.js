@@ -1,7 +1,7 @@
 // Функция открытия модального окна
 export function openModal(popup) {
 
-    popup.classList.add('popup_is-opened', 'popup_is-animated');
+    popup.classList.add('popup_is-opened');
 
     document.addEventListener('keydown', handleKeydown);
 };
