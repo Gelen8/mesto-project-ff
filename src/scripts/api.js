@@ -90,7 +90,7 @@ export const setLikeOnCard = (cardId) => {
             }
             return Promise.reject(`Ошибка: ${res.status}`);
         })
-}
+};
 
 export const removeLikeFromCard = (cardId) => {
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
@@ -103,7 +103,7 @@ export const removeLikeFromCard = (cardId) => {
             }
             return Promise.reject(`Ошибка: ${res.status}`);
         })
-}
+};
 
 export const changeAvatar = (link) => {
     return fetch(`${config.baseUrl}/users/me/avatar`, {
@@ -119,4 +119,4 @@ export const changeAvatar = (link) => {
             }
             return Promise.reject(`Ошибка: ${res.status}`);
         })
-}
+};

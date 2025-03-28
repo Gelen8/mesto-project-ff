@@ -18,7 +18,7 @@ Promise.all([getUserData(), getInitialCards()])
         userPhoto.style.backgroundImage = `url(${userData.avatar})`;
 
         initialCards.forEach(function(card) {
-            const newCard = createCard(card, deleteCard, delCard, checkLikeByUser, likeCard, showImageModal, setLikeOnCard, removeLikeFromCard, userData['_id'], card['_id']);
+            const newCard = createCard(card, deleteCard, delCard, checkLikeByUser, likeCard, showImageModal, setLikeOnCard, removeLikeFromCard, userData['_id']);
             placesList.append(newCard);
         })
 
@@ -42,6 +42,7 @@ enableValidation(validationConfig);
 const popupAvatar = document.querySelector('.popup_type_avatar');
 
 userPhoto.addEventListener('click', () => openModal(popupAvatar));
+
 setCloseModalByButton(popupAvatar);
 
 popupAvatar.addEventListener('click', handleClickOnOverlay);
@@ -59,13 +60,14 @@ function handleFormAvatrSubmit(evt) {
     changeAvatar(avatarLinkInput.value)
         .then((data) =>{
             userPhoto.style.backgroundImage = `url(${data.avatar})`;
+            formElementAvatar.reset();
+            clearValidation(formElementAvatar, validationConfig);
+            closeModal(popupAvatar);
         })
         .catch((err) => {
             console.log(err);
         })
         .finally(() => renderLoading(false, buttonAvatarSave))
-
-    closeModal(popupAvatar);
 };
 
 formElementAvatar.addEventListener('submit', handleFormAvatrSubmit);
@@ -81,6 +83,7 @@ buttonEditProfile.addEventListener('click', () => {
 }); 
 
 setCloseModalByButton(popupProfile);
+
 popupProfile.addEventListener('click', handleClickOnOverlay);
 
 function setValueToForm(popup) {
@@ -108,13 +111,12 @@ function handleFormEditProfileSubmit(evt) {
         .then((data) => {
             userName.textContent = data.name;
             userDescription.textContent = data.about;
+            closeModal(popupProfile);
         })
         .catch((err) => {
             console.log(err);
         })
         .finally(() => renderLoading(false, buttonProfileSave))
-
-    closeModal(popupProfile);
 };
 
 formElementEditProfile.addEventListener('submit', handleFormEditProfileSubmit);
@@ -124,7 +126,9 @@ const popupNewCard = document.querySelector('.popup_type_new-card');
 const buttonAddCard = document.querySelector('.profile__add-button'); 
 
 buttonAddCard.addEventListener('click', () => openModal(popupNewCard));
+
 setCloseModalByButton(popupNewCard);
+
 popupNewCard.addEventListener('click', handleClickOnOverlay);
 
 // Форма добавления карточки
@@ -139,23 +143,24 @@ function handleFormNewCardSubmit(evt) {
 
     addCard(cardNameInput.value, cardUrlInput.value)
         .then((data) => {
-            placesList.prepend(createCard(data, deleteCard, delCard, checkLikeByUser, likeCard, showImageModal, setLikeOnCard, removeLikeFromCard, data.owner['_id'], data['_id']))    
+            placesList.prepend(createCard(data, deleteCard, delCard, checkLikeByUser, likeCard, showImageModal, setLikeOnCard, removeLikeFromCard, data.owner['_id']));
+            formElementNewCard.reset();
+            clearValidation(formElementNewCard, validationConfig);
+            closeModal(popupNewCard);
         })
         .catch((err) => {
             console.log(err);
         })
         .finally(() => renderLoading(false, buttonNewCardSave))
-    
-    formElementNewCard.reset();
-    clearValidation(formElementNewCard, validationConfig);
-    closeModal(popupNewCard);
-}
+};
 
 formElementNewCard.addEventListener('submit', handleFormNewCardSubmit);
 
 // 4) Модальное окно просмотра фотографии
 const popupImage = document.querySelector('.popup_type_image');
+
 setCloseModalByButton(popupImage);
+
 popupImage.addEventListener('click', handleClickOnOverlay);
 
 // Функция показывающая картинку в модальном окне
